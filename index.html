@@ -4,66 +4,77 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Clarity Engine™ by Amber</title>
+
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
   :root {
-    --bg-top: #FCE9EC;
-    --bg-bottom: #FFFDFD;
+    --base: #F7F6F4;
+    --warm-top: #FCE9EC;
     --text: #3C3C3C;
     --accent: #FF9AA2;
-    --soft-gray: #EAE6E7;
+    --gray-line: #EAE6E7;
   }
 
   body {
     font-family: "Inter", sans-serif;
-    background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
-    margin: 0;
-    height: 100vh;
+    background: radial-gradient(circle at top center, var(--warm-top) 0%, var(--base) 70%);
     color: var(--text);
+    margin: 0;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
 
   header {
+    width: 100%;
+    max-width: 1200px;
     text-align: center;
-    font-weight: 600;
-    padding: 1.5rem 0;
+    padding: 3.5rem 0 1.25rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
     font-size: 1.2rem;
-    letter-spacing: -0.01em;
+    border-bottom: 1px solid var(--gray-line);
+  }
+
+  #workspace {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    padding: 4rem 2rem 8rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   #chat {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    max-width: 700px;
     width: 100%;
-    margin: 0 auto;
-    padding: 2rem 1rem 6rem;
+    max-width: 800px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+    padding: 2rem 3rem;
+    box-sizing: border-box;
+    overflow-y: auto;
   }
 
   .message {
-    max-width: 80%;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1rem;
-    border-radius: 1rem;
     line-height: 1.8;
+    margin-bottom: 1.25rem;
     opacity: 0;
     animation: fadeIn 0.4s ease forwards;
   }
 
-  .user {
-    align-self: flex-end;
-    background: var(--soft-gray);
+  .engine {
+    font-weight: 700;
+    color: var(--accent);
   }
 
-  .engine {
-    align-self: flex-start;
-    background: var(--accent);
-    color: #fff;
-    font-weight: 500;
+  .user {
+    font-weight: 400;
   }
 
   @keyframes fadeIn {
@@ -71,30 +82,41 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  /* Floating Input */
   #inputArea {
     position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: rgba(255,255,255,0.9);
-    border-top: 1px solid var(--soft-gray);
-    padding: 1rem 2rem;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 700px;
+    background: #fff;
+    border: 1px solid var(--gray-line);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border-radius: 14px;
     display: flex;
     justify-content: center;
   }
 
   #userInput {
     width: 100%;
-    max-width: 700px;
     font-family: inherit;
     font-size: 1rem;
-    padding: 1rem;
-    border: 1px solid var(--soft-gray);
-    border-radius: 0.75rem;
+    padding: 1rem 1.5rem;
+    border: none;
     outline: none;
+    border-radius: 14px;
+  }
+
+  #userInput::placeholder {
+    color: #A8A6A5;
+  }
+
+  #userInput:focus {
+    box-shadow: 0 0 0 3px rgba(255,154,162,0.25);
   }
 
   #typing {
-    align-self: flex-start;
     display: none;
     font-size: 1.4rem;
     color: var(--accent);
@@ -102,107 +124,92 @@
   }
 </style>
 </head>
+
 <body>
   <header>Clarity Engine™ by Amber</header>
-  <div id="chat"></div>
 
-  <div id="inputArea">
-    <input type="text" id="userInput" placeholder="Type your first thought..." autocomplete="off" />
+  <div id="workspace">
+    <div id="chat"></div>
+    <div id="typing">...</div>
   </div>
 
-  <script>
-    const chat = document.getElementById('chat');
-    const input = document.getElementById('userInput');
+  <div id="inputArea">
+    <input id="userInput" type="text" placeholder="Type with intention..." autocomplete="off" />
+  </div>
 
-    // internal state
-    let step = 'reflect';
+<script>
+const chat = document.getElementById('chat');
+const input = document.getElementById('userInput');
+const typing = document.getElementById('typing');
+let step = 'reflect';
 
-    // engine rules
-    const voiceRules = {
-      declarative: true,
-      directNotHarsh: true,
-      structured: true,
-      calm: true
-    };
+/* --- Core tone enforcement --- */
+const voiceRules = {
+  declarative:true,
+  directNotHarsh:true,
+  structured:true,
+  calm:true
+};
 
-    input.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && input.value.trim() !== '') {
-        const text = input.value.trim();
-        appendMessage(text, 'user');
-        input.value = '';
-        engineRespond(text);
-      }
-    });
+/* --- Input listener --- */
+input.addEventListener('keydown',e=>{
+  if(e.key==='Enter' && input.value.trim()!==''){
+    const text=input.value.trim();
+    appendMessage(text,'user');
+    input.value='';
+    engineRespond(text);
+  }
+});
 
-    function appendMessage(text, sender) {
-      const msg = document.createElement('div');
-      msg.classList.add('message', sender);
-      msg.innerText = text;
-      chat.appendChild(msg);
-      chat.scrollTop = chat.scrollHeight;
-    }
+function appendMessage(text,sender){
+  const msg=document.createElement('div');
+  msg.classList.add('message',sender);
+  msg.innerText=text;
+  chat.appendChild(msg);
+  chat.scrollTop=chat.scrollHeight;
+}
 
-    async function engineRespond(userText) {
-      showTyping(true);
-      await pause(1000); // 1-sec pause per dot × 3 below
-      for (let i=0;i<3;i++){await pause(1000);}
-      showTyping(false);
+async function engineRespond(userText){
+  showTyping(true);
+  for(let i=0;i<3;i++){await pause(1000);}
+  showTyping(false);
+  const response=generateResponse(userText);
+  appendMessage(response,'engine');
+}
 
-      const response = generateResponse(userText);
-      appendMessage(response, 'engine');
-    }
+function showTyping(show){
+  typing.style.display=show?'block':'none';
+  chat.scrollTop=chat.scrollHeight;
+}
+function pause(ms){return new Promise(res=>setTimeout(res,ms));}
 
-    function showTyping(show){
-      let typing = document.getElementById('typing');
-      if(!typing){
-        typing = document.createElement('div');
-        typing.id='typing';
-        typing.innerText='...';
-        chat.appendChild(typing);
-      }
-      typing.style.display = show ? 'block' : 'none';
-      chat.scrollTop = chat.scrollHeight;
-    }
+/* --- Invisible 4-step logic --- */
+function generateResponse(text){
+  let r='';
+  if(step==='reflect'){r=reflectStage(text);step='organize';}
+  else if(step==='organize'){r=organizeStage(text);step='decide';}
+  else if(step==='decide'){r=decideStage(text);step='confirm';}
+  else{r=confirmStage(text);step='reflect';}
+  return r;
+}
 
-    function pause(ms){ return new Promise(res => setTimeout(res, ms)); }
+/* --- Declarative, structured tone --- */
+function reflectStage(t){
+return `You’re describing complexity around “${t}.”\n\nThis isn’t confusion — it’s clutter.\n\nLet’s separate what actually matters.`;
+}
 
-    function generateResponse(inputText){
-      inputText = inputText.toLowerCase();
+function organizeStage(t){
+return `Structure:\n\n• Core issue → unclear hierarchy\n• Secondary friction → scattered focus\n\nWe’ll simplify next.`;
+}
 
-      // Step logic invisible but structured
-      let response = '';
-      if(step==='reflect'){
-        response = reflectStage(inputText);
-        step='organize';
-      } else if(step==='organize'){
-        response = organizeStage(inputText);
-        step='decide';
-      } else if(step==='decide'){
-        response = decideStage(inputText);
-        step='confirm';
-      } else {
-        response = confirmStage(inputText);
-        step='reflect';
-      }
-      return response;
-    }
+function decideStage(t){
+return `Decision:\n\nFocus on one executable move within 30 minutes.\n\nThat’s the shift that restarts momentum.`;
+}
 
-    function reflectStage(text){
-      return `You’re carrying complexity around "${text}".\n\nLet’s separate what actually matters from what’s just noise.`;
-    }
-
-    function organizeStage(text){
-      return `Here’s the structure underneath this:\n\n• Core issue: mis-sequenced priorities\n• Secondary friction: unclear next action\n\nLet’s narrow it.`;
-    }
-
-    function decideStage(text){
-      return `Direction:\n\nFocus on one executable move within 30 minutes.\nThat’s the structural fix that restarts momentum.`;
-    }
-
-    function confirmStage(text){
-      return `You’re clear.\n\nExecute that next move.\nThen stop.\n\nCome back when you need the next layer of clarity.`;
-    }
-  </script>
+function confirmStage(t){
+return `Direction locked.\n\nExecute the move.\nThen stop.\n\nCome back when the next layer needs clarity.`;
+}
+</script>
 </body>
 </html>
 
