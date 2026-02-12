@@ -11,7 +11,6 @@
 
   <style>
     :root{
-      /* blush / grey / white / charcoal */
       --bg:#fbf7f7;
       --panel:#ffffff;
       --panel2:#f4f1f1;
@@ -28,7 +27,7 @@
       --shadow:0 22px 60px rgba(0,0,0,0.08);
       --shadow2:0 12px 28px rgba(0,0,0,0.06);
 
-      --max:980px;
+      --max:1180px;
     }
 
     *{box-sizing:border-box}
@@ -48,465 +47,1029 @@
       display:flex;
       align-items:flex-start;
       justify-content:center;
-      padding:54px 18px;
+      padding:18px;
     }
 
     .shell{
       width:min(var(--max),100%);
       display:grid;
-      grid-template-columns:300px 1fr;
-      gap:18px;
-      align-items:start;
+      grid-template-columns: 320px 1fr;
+      gap: 14px;
+      align-items: start;
     }
 
     /* Sidebar */
     .rail{
-      background:rgba(255,255,255,0.72);
+      background:rgba(255,255,255,0.75);
       border:1px solid var(--border);
       border-radius:var(--radius);
       box-shadow:var(--shadow2);
-      padding:16px;
+      padding:14px;
       position:sticky;
       top:18px;
-      backdrop-filter:blur(10px);
+      backdrop-filter: blur(10px);
+      height: calc(100vh - 36px);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
     }
-    .brand{display:flex;flex-direction:column;gap:6px;padding:6px 6px 12px 6px}
+
+    .brand{
+      padding: 10px 10px 12px 10px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(31,31,31,0.07);
+    }
+    .brandTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:6px;
+    }
     .brandTitle{
-      font-size:14px;font-weight:800;letter-spacing:.2px;
-      display:flex;align-items:center;gap:10px;
+      font-size:14px;
+      font-weight:850;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      letter-spacing:.2px;
     }
     .badge{
-      font-size:11px;font-weight:800;
-      padding:5px 10px;border-radius:999px;
+      font-size:11px;
+      font-weight:850;
+      padding:5px 10px;
+      border-radius:999px;
       border:1px solid rgba(231,182,190,0.55);
       background:rgba(231,182,190,0.16);
-      color:var(--text);
     }
-    .brandSub{font-size:12px;color:var(--muted);line-height:1.4}
-    .divider{height:1px;background:rgba(31,31,31,0.08);margin:10px 0 14px 0}
-    .railLabel{
-      font-size:11px;letter-spacing:.8px;text-transform:uppercase;
-      color:rgba(31,31,31,0.52);margin:0 0 10px 0;padding:0 6px;
+    .brandSub{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .railActions{
+      margin-top:12px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding: 0 4px;
     }
     .railBtn{
-      width:100%;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid rgba(231,182,190,0.60);
-      background:rgba(231,182,190,0.16);
-      color:var(--text);
+      flex:1;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(231,182,190,0.60);
+      background: rgba(231,182,190,0.16);
       cursor:pointer;
-      font-weight:800;
-      transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+      font-weight:900;
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
     }
     .railBtn:hover{
-      transform:translateY(-1px);
-      box-shadow:0 10px 20px rgba(0,0,0,0.06);
-      background:rgba(231,182,190,0.22);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      background: rgba(231,182,190,0.22);
     }
-    .railNote{
-      font-size:12px;color:var(--muted);
-      padding:10px 6px 0 6px;line-height:1.5;
+    .iconBtn{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      border:1px solid rgba(31,31,31,0.10);
+      background: rgba(255,255,255,0.75);
+      cursor:pointer;
+      font-weight:900;
+    }
+
+    .railLabel{
+      margin: 14px 0 8px 0;
+      padding: 0 10px;
+      font-size:11px;
+      letter-spacing:.9px;
+      text-transform:uppercase;
+      color: rgba(31,31,31,0.52);
+      font-weight:800;
+    }
+
+    .sessionList{
+      overflow:auto;
+      padding: 0 6px 10px 6px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      flex: 1;
+    }
+
+    .sessionItem{
+      border: 1px solid rgba(31,31,31,0.10);
+      background: rgba(255,255,255,0.8);
+      border-radius: 16px;
+      padding: 10px 10px;
+      cursor:pointer;
+      transition: transform .10s ease, box-shadow .12s ease, border .12s ease;
+      position: relative;
+    }
+    .sessionItem:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.06);
+      border: 1px solid rgba(231,182,190,0.55);
+    }
+    .sessionItem.active{
+      border: 1px solid rgba(231,182,190,0.65);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+      background: rgba(231,182,190,0.10);
+    }
+    .sessionRow{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .sessionTitle{
+      font-size:13px;
+      font-weight:850;
+      line-height:1.25;
+      margin:0;
+      max-width: 220px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .sessionMeta{
+      font-size:12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .kebab{
+      width:34px;
+      height:30px;
+      border-radius: 12px;
+      border: 1px solid rgba(31,31,31,0.10);
+      background: rgba(255,255,255,0.75);
+      cursor:pointer;
+      font-weight:900;
+      line-height: 28px;
+    }
+
+    .menu{
+      position:absolute;
+      top: 44px;
+      right: 10px;
+      width: 170px;
+      border: 1px solid rgba(31,31,31,0.10);
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.10);
+      overflow:hidden;
+      z-index: 50;
+    }
+    .menu button{
+      width:100%;
+      text-align:left;
+      padding: 10px 12px;
+      border:none;
+      background:transparent;
+      cursor:pointer;
+      font-weight: 700;
+      color: rgba(31,31,31,0.86);
+    }
+    .menu button:hover{
+      background: rgba(231,182,190,0.12);
+    }
+    .menu .danger{ color: #b42318; }
+    .menu .hint{
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid rgba(31,31,31,0.08);
+    }
+
+    .railFooter{
+      padding: 10px 10px 2px 10px;
+      border-top: 1px solid rgba(31,31,31,0.08);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     /* Main */
     .main{
-      background:rgba(255,255,255,0.78);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
       overflow:hidden;
-      backdrop-filter:blur(10px);
+      backdrop-filter: blur(10px);
+      min-height: calc(100vh - 36px);
+      display:flex;
+      flex-direction:column;
     }
+
     .topbar{
-      display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
-      padding:22px 24px;
-      border-bottom:1px solid rgba(31,31,31,0.08);
-      background:rgba(255,255,255,0.65);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      padding: 20px 22px;
+      border-bottom: 1px solid rgba(31,31,31,0.08);
+      background: rgba(255,255,255,0.65);
     }
+
     .kickerRow{
-      display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
     }
     .kicker{
-      font-size:12px;letter-spacing:.9px;text-transform:uppercase;
-      color:rgba(31,31,31,0.48);font-weight:700;
+      font-size:12px;
+      letter-spacing:.9px;
+      text-transform:uppercase;
+      color: rgba(31,31,31,0.50);
+      font-weight: 800;
     }
     .kickerPill{
-      font-size:12px;font-weight:800;
-      padding:7px 10px;border-radius:999px;
-      border:1px solid rgba(31,31,31,0.10);
-      background:rgba(255,255,255,0.85);
-      color:rgba(31,31,31,0.75);
+      font-size:12px;
+      font-weight: 850;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(31,31,31,0.10);
+      background: rgba(255,255,255,0.85);
+      color: rgba(31,31,31,0.75);
     }
     .topLeft h1{
       margin:0;
-      font-size:24px;
-      font-weight:850;
-      letter-spacing:-0.3px;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.3px;
     }
     .sub{
       margin-top:10px;
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.55;
-      max-width:680px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+      max-width: 760px;
     }
-    .content{padding:22px 24px 26px 24px}
 
-    /* Lanes */
+    .content{
+      padding: 18px 22px 22px 22px;
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+      flex: 1;
+    }
+
+    /* App panels */
+    .panel{
+      background:#fff;
+      border:1px solid rgba(31,31,31,0.10);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 12px 26px rgba(0,0,0,0.05);
+      max-width: 820px;
+    }
+
     .modes{
       display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
-      max-width:760px;
+      grid-template-columns: 1fr;
+      gap: 12px;
     }
+
     .modeBtn{
-      padding:18px;
-      border-radius:16px;
-      border:1px solid rgba(31,31,31,0.10);
-      background:#fff;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(31,31,31,0.10);
+      background: #fff;
       cursor:pointer;
       text-align:left;
-      transition:transform .12s ease, box-shadow .12s ease, border .12s ease, background .12s ease;
-      box-shadow:0 10px 22px rgba(0,0,0,0.04);
+      transition: transform .12s ease, box-shadow .12s ease, border .12s ease, background .12s ease;
     }
     .modeBtn:hover{
-      transform:translateY(-2px);
-      border:1px solid rgba(231,182,190,0.60);
-      background:var(--blushSoft2);
-      box-shadow:0 14px 30px rgba(0,0,0,0.06);
+      transform: translateY(-2px);
+      border: 1px solid rgba(231,182,190,0.60);
+      background: rgba(231,182,190,0.10);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.06);
     }
-    .modeTitle{font-weight:850;font-size:15px;margin:0 0 6px 0}
-    .modeDesc{font-size:13px;color:var(--muted);margin:0;line-height:1.5}
+    .modeTitle{ font-weight: 900; font-size: 15px; margin: 0 0 6px 0; }
+    .modeDesc{ font-size: 13px; color: var(--muted); margin:0; line-height:1.5; }
 
-    /* Flow */
-    .flow{max-width:760px;display:none}
     .fieldLabel{
-      font-size:12px;letter-spacing:.9px;text-transform:uppercase;
-      color:rgba(31,31,31,0.50);
-      margin:18px 0 8px 0;
-      font-weight:700;
+      font-size: 12px;
+      letter-spacing: .9px;
+      text-transform: uppercase;
+      color: rgba(31,31,31,0.50);
+      margin: 14px 0 8px 0;
+      font-weight: 850;
     }
-    input,textarea{
-      width:100%;
-      border-radius:14px;
-      border:1px solid rgba(31,31,31,0.12);
-      background:#fff;
-      padding:12px;
-      font-size:14px;
+    input, textarea{
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(31,31,31,0.12);
+      background: #fff;
+      padding: 12px;
+      font-size: 14px;
       outline:none;
-      color:var(--text);
-      transition:border .12s ease, box-shadow .12s ease;
-      font-family:inherit;
+      color: var(--text);
+      transition: border .12s ease, box-shadow .12s ease;
+      font-family: inherit;
     }
-    textarea{min-height:120px;resize:vertical}
-    input:focus,textarea:focus{
-      border:1px solid rgba(231,182,190,0.75);
-      box-shadow:0 0 0 4px rgba(231,182,190,0.22);
+    textarea{ min-height: 120px; resize: vertical; }
+    input:focus, textarea:focus{
+      border: 1px solid rgba(231,182,190,0.75);
+      box-shadow: 0 0 0 4px rgba(231,182,190,0.22);
     }
-    .actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+
+    .actions{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
     .primary{
-      flex:1;min-width:240px;
-      padding:14px;
-      border-radius:14px;
-      border:1px solid rgba(231,182,190,0.70);
-      background:rgba(231,182,190,0.20);
+      flex:1;
+      min-width: 240px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(231,182,190,0.70);
+      background: rgba(231,182,190,0.20);
       cursor:pointer;
-      font-weight:900;
-      transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+      font-weight: 950;
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
     }
     .primary:hover{
-      transform:translateY(-1px);
-      box-shadow:0 12px 26px rgba(0,0,0,0.06);
-      background:rgba(231,182,190,0.26);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.06);
+      background: rgba(231,182,190,0.26);
     }
     .ghost{
-      padding:14px;
-      border-radius:14px;
-      border:1px solid rgba(31,31,31,0.12);
-      background:rgba(255,255,255,0.75);
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(31,31,31,0.12);
+      background: rgba(255,255,255,0.80);
       cursor:pointer;
-      font-weight:850;
-      color:rgba(31,31,31,0.78);
+      font-weight: 900;
+      color: rgba(31,31,31,0.80);
     }
 
-    /* Result */
-    .result{
-      max-width:760px;
-      display:none;
-      border:1px solid rgba(31,31,31,0.10);
-      border-radius:18px;
-      background:#fff;
-      box-shadow:0 12px 28px rgba(0,0,0,0.05);
-      padding:18px;
+    .resultGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
     }
-    .resultGrid{display:grid;grid-template-columns:1fr;gap:14px}
     .block{
-      border:1px solid rgba(31,31,31,0.08);
-      background:rgba(245,241,241,0.70);
-      border-radius:16px;
-      padding:14px;
+      border: 1px solid rgba(31,31,31,0.08);
+      background: rgba(245,241,241,0.70);
+      border-radius: 16px;
+      padding: 14px;
     }
     .blockTitle{
-      font-size:12px;letter-spacing:.9px;text-transform:uppercase;
-      color:rgba(31,31,31,0.55);
-      margin:0 0 6px 0;
-      font-weight:900;
+      font-size: 12px;
+      letter-spacing: .9px;
+      text-transform: uppercase;
+      color: rgba(31,31,31,0.55);
+      margin: 0 0 6px 0;
+      font-weight: 950;
     }
     .blockText{
       margin:0;
-      font-size:14px;
-      line-height:1.6;
-      color:rgba(31,31,31,0.92);
-      white-space:pre-wrap;
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(31,31,31,0.92);
+      white-space: pre-wrap;
     }
-    .copyRow{
-      display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;
-      align-items:center;justify-content:space-between;
-    }
-    .copyBtn{
-      padding:12px 14px;
-      border-radius:14px;
-      border:1px solid rgba(31,31,31,0.12);
-      background:rgba(255,255,255,0.80);
-      cursor:pointer;
-      font-weight:900;
-    }
-    .toast{font-size:12px;color:rgba(31,31,31,0.55)}
 
-    @media (max-width:920px){
-      .shell{grid-template-columns:1fr}
-      .rail{position:relative;top:0}
+    .toolbar{
+      display:flex;
+      justify-content:space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+    .toolBtn{
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(31,31,31,0.12);
+      background: rgba(255,255,255,0.85);
+      cursor:pointer;
+      font-weight: 950;
+    }
+    .toast{ font-size: 12px; color: rgba(31,31,31,0.55); }
+
+    /* Mobile */
+    .mobileTop{
+      display:none;
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(31,31,31,0.10);
+      border-radius: 16px;
+      padding: 10px;
+      margin-bottom: 12px;
+      backdrop-filter: blur(10px);
+    }
+    .mobileTop .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .mobileTop .title{
+      font-weight: 950;
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px){
+      .shell{ grid-template-columns: 1fr; }
+      .rail{ display:none; position:relative; height:auto; }
+      .mobileTop{ display:block; }
+      .main{ min-height: auto; }
+    }
+
+    /* Print styling */
+    @media print{
+      body{ background:#fff; }
+      .rail, .mobileTop, .topbar, .actions, .toolbar{ display:none !important; }
+      .wrap{ padding:0; }
+      .main{ box-shadow:none; border:none; }
+      .panel{ box-shadow:none; border:none; }
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <div class="shell">
+    <div style="width:min(var(--max),100%);">
 
-      <aside class="rail">
-        <div class="brand">
-          <div class="brandTitle">Clarity Guide™ <span class="badge">Lite</span></div>
-          <div class="brandSub">A decision accelerator inside the AI Product Build Kit™.</div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="railLabel">Quick Start</div>
-        <button class="railBtn" onclick="resetAll()">New Clarity</button>
-
-        <div class="railNote">
-          Lite gives you structured decisions.<br>
-          AI upgrade can be added later.
-        </div>
-      </aside>
-
-      <main class="main">
-        <div class="topbar">
-          <div class="topLeft">
-            <div class="kickerRow">
-              <div class="kicker">Inside the AI Product Build Kit™</div>
-              <div class="kickerPill">Powered by Clarity Engine™</div>
-            </div>
-            <h1>What do you need clarity on?</h1>
-            <div class="sub">Choose one lane. Get one decision. Take one next step.</div>
+      <!-- Mobile bar -->
+      <div class="mobileTop">
+        <div class="row">
+          <div class="title">Clarity Guide™ (Lite)</div>
+          <div style="display:flex;gap:8px;">
+            <button class="toolBtn" onclick="toggleMobileRail()">Sessions</button>
+            <button class="toolBtn" onclick="newSession()">New</button>
           </div>
         </div>
+      </div>
 
-        <div class="content">
+      <div class="shell" id="shell">
 
-          <section id="starter">
-            <div class="modes">
-              <button class="modeBtn" onclick="startMode('angle')">
-                <div class="modeTitle">Pick My Product Angle</div>
-                <p class="modeDesc">Narrow your idea into a clear, sellable direction.</p>
-              </button>
-
-              <button class="modeBtn" onclick="startMode('offer')">
-                <div class="modeTitle">Structure My Offer</div>
-                <p class="modeDesc">Turn a vague idea into a simple promise + format.</p>
-              </button>
-
-              <button class="modeBtn" onclick="startMode('next')">
-                <div class="modeTitle">Tell Me My Next Step</div>
-                <p class="modeDesc">Stop looping. Choose the next move that reduces uncertainty.</p>
-              </button>
+        <!-- Sidebar -->
+        <aside class="rail" id="rail" onclick="closeMenu()">
+          <div class="brand">
+            <div class="brandTop">
+              <div class="brandTitle">Clarity Guide™ <span class="badge">Lite</span></div>
             </div>
-          </section>
+            <div class="brandSub">A decision accelerator inside the AI Product Build Kit™.</div>
+          </div>
 
-          <section id="flow" class="flow"></section>
-          <section id="result" class="result"></section>
+          <div class="railActions">
+            <button class="railBtn" onclick="newSession()">New Clarity</button>
+            <button class="iconBtn" title="Export current" onclick="exportCurrent()">⤓</button>
+          </div>
 
-        </div>
-      </main>
+          <div class="railLabel">Sessions</div>
+          <div class="sessionList" id="sessionList"></div>
 
+          <div class="railFooter">
+            <div><b>Shortcuts:</b> ⌘/Ctrl + K (New) • ⌘/Ctrl + P (Print)</div>
+            <div style="margin-top:6px;">Powered by Clarity Engine™</div>
+          </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="main">
+          <div class="topbar">
+            <div class="topLeft">
+              <div class="kickerRow">
+                <div class="kicker">Inside the AI Product Build Kit™</div>
+                <div class="kickerPill">Decision Accelerator</div>
+              </div>
+              <h1 id="workspaceTitle">What do you need clarity on?</h1>
+              <div class="sub">Choose one lane. Get one decision. Take one next step.</div>
+            </div>
+          </div>
+
+          <div class="content">
+
+            <!-- Starter -->
+            <section class="panel" id="starterPanel">
+              <div class="modes">
+                <button class="modeBtn" onclick="startMode('angle')">
+                  <div class="modeTitle">Pick My Product Angle</div>
+                  <p class="modeDesc">Narrow your idea into a clear, sellable direction.</p>
+                </button>
+
+                <button class="modeBtn" onclick="startMode('offer')">
+                  <div class="modeTitle">Structure My Offer</div>
+                  <p class="modeDesc">Turn a vague idea into a simple promise + format.</p>
+                </button>
+
+                <button class="modeBtn" onclick="startMode('next')">
+                  <div class="modeTitle">Tell Me My Next Step</div>
+                  <p class="modeDesc">Stop looping. Choose the next move that reduces uncertainty.</p>
+                </button>
+              </div>
+            </section>
+
+            <!-- Flow -->
+            <section class="panel" id="flowPanel" style="display:none;"></section>
+
+            <!-- Result -->
+            <section class="panel" id="resultPanel" style="display:none;"></section>
+
+          </div>
+        </main>
+
+      </div>
     </div>
   </div>
 
   <script>
+    // =========================
+    // Local App State
+    // =========================
+    const STORAGE_KEY = "clarity_guide_sessions_v2";
+    const MAX_SESSIONS = 60;
+
+    let sessions = [];
+    let activeId = null;
+    let menuOpenFor = null;
     let currentMode = null;
 
-    function el(id){ return document.getElementById(id); }
+    const el = (id) => document.getElementById(id);
 
-    function resetAll(){
+    function uid(){
+      return Math.random().toString(16).slice(2) + Date.now().toString(16);
+    }
+
+    function now(){ return Date.now(); }
+
+    function formatDate(ts){
+      const d = new Date(ts);
+      return d.toLocaleDateString() + " • " + d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+    }
+
+    function safeLoad(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return null;
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : null;
+      }catch{
+        return null;
+      }
+    }
+
+    function safeSave(){
+      try{
+        const pruned = [...sessions].sort((a,b)=>b.createdAt-a.createdAt).slice(0, MAX_SESSIONS);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(pruned));
+      }catch{}
+    }
+
+    function defaultSession(){
+      return {
+        id: uid(),
+        title: "New Session",
+        createdAt: now(),
+        updatedAt: now(),
+        mode: null,
+        inputs: {},
+        output: null
+      };
+    }
+
+    function init(){
+      const loaded = safeLoad();
+      if(loaded && loaded.length){
+        sessions = loaded;
+        activeId = sessions[0].id;
+      }else{
+        sessions = [defaultSession()];
+        activeId = sessions[0].id;
+        safeSave();
+      }
+      renderRail();
+      renderWorkspace();
+      bindShortcuts();
+    }
+
+    // =========================
+    // Sidebar (Sessions)
+    // =========================
+    function closeMenu(){ menuOpenFor = null; renderRail(); }
+
+    function setActive(id){
+      activeId = id;
+      menuOpenFor = null;
       currentMode = null;
-      el("starter").style.display = "block";
-      el("flow").style.display = "none";
-      el("result").style.display = "none";
-      el("flow").innerHTML = "";
-      el("result").innerHTML = "";
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      renderRail();
+      renderWorkspace();
+    }
+
+    function newSession(){
+      const s = defaultSession();
+      sessions = [s, ...sessions];
+      activeId = s.id;
+      menuOpenFor = null;
+      currentMode = null;
+      safeSave();
+      renderRail();
+      renderWorkspace();
+    }
+
+    function deleteSession(id){
+      sessions = sessions.filter(s => s.id !== id);
+      if(!sessions.length){
+        const s = defaultSession();
+        sessions = [s];
+        activeId = s.id;
+      }else if(activeId === id){
+        activeId = sessions[0].id;
+      }
+      menuOpenFor = null;
+      safeSave();
+      renderRail();
+      renderWorkspace();
+    }
+
+    function renameSession(id){
+      const s = sessions.find(x=>x.id===id);
+      const current = s?.title || "Clarity Session";
+      const next = prompt("Rename session", current);
+      if(!next) return;
+      s.title = next.trim().slice(0, 60) || current;
+      s.updatedAt = now();
+      safeSave();
+      renderRail();
+      renderWorkspace();
+    }
+
+    function exportCurrent(){
+      const s = getActive();
+      if(!s) return;
+
+      const txt = sessionToText(s);
+      const blob = new Blob([txt], {type:"text/plain;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = (s.title || "clarity-session").replace(/[^\w\s-]/g,"").replace(/\s+/g,"-").toLowerCase() + ".txt";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function renderRail(){
+      const list = el("sessionList");
+      if(!list) return;
+      list.innerHTML = "";
+
+      sessions.forEach(s => {
+        const item = document.createElement("div");
+        item.className = "sessionItem" + (s.id === activeId ? " active" : "");
+        item.onclick = (e) => { e.stopPropagation(); setActive(s.id); };
+
+        const row = document.createElement("div");
+        row.className = "sessionRow";
+
+        const left = document.createElement("div");
+        const title = document.createElement("p");
+        title.className = "sessionTitle";
+        title.textContent = s.title || "Clarity Session";
+
+        const meta = document.createElement("div");
+        meta.className = "sessionMeta";
+        meta.textContent = (s.output ? "Completed • " : "In progress • ") + formatDate(s.updatedAt || s.createdAt);
+
+        left.appendChild(title);
+        left.appendChild(meta);
+
+        const kebab = document.createElement("button");
+        kebab.className = "kebab";
+        kebab.textContent = "⋯";
+        kebab.onclick = (e) => {
+          e.stopPropagation();
+          menuOpenFor = (menuOpenFor === s.id) ? null : s.id;
+          renderRail();
+        };
+
+        row.appendChild(left);
+        row.appendChild(kebab);
+        item.appendChild(row);
+
+        if(menuOpenFor === s.id){
+          const menu = document.createElement("div");
+          menu.className = "menu";
+          menu.onclick = (e)=>e.stopPropagation();
+
+          const b1 = document.createElement("button");
+          b1.textContent = "Rename";
+          b1.onclick = ()=> renameSession(s.id);
+
+          const b2 = document.createElement("button");
+          b2.textContent = "Export (.txt)";
+          b2.onclick = ()=> exportSession(s.id);
+
+          const b3 = document.createElement("button");
+          b3.textContent = "Delete";
+          b3.className = "danger";
+          b3.onclick = ()=> {
+            const ok = confirm("Delete this session?");
+            if(ok) deleteSession(s.id);
+            else closeMenu();
+          };
+
+          const hint = document.createElement("div");
+          hint.className = "hint";
+          hint.textContent = "Saved locally on this device.";
+
+          menu.appendChild(b1);
+          menu.appendChild(b2);
+          menu.appendChild(b3);
+          menu.appendChild(hint);
+          item.appendChild(menu);
+        }
+
+        list.appendChild(item);
+      });
+    }
+
+    function exportSession(id){
+      const s = sessions.find(x=>x.id===id);
+      if(!s) return;
+      const txt = sessionToText(s);
+      const blob = new Blob([txt], {type:"text/plain;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = (s.title || "clarity-session").replace(/[^\w\s-]/g,"").replace(/\s+/g,"-").toLowerCase() + ".txt";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      menuOpenFor = null;
+      renderRail();
+    }
+
+    function getActive(){
+      return sessions.find(s => s.id === activeId);
+    }
+
+    function sessionToText(s){
+      const lines = [];
+      lines.push("CLARITY GUIDE™ (LITE)");
+      lines.push("Inside the AI Product Build Kit™");
+      lines.push("");
+      lines.push("SESSION: " + (s.title || "Clarity Session"));
+      lines.push("CREATED: " + new Date(s.createdAt).toString());
+      lines.push("UPDATED: " + new Date(s.updatedAt || s.createdAt).toString());
+      lines.push("MODE: " + (s.mode || "—"));
+      lines.push("");
+      lines.push("INPUTS:");
+      const keys = Object.keys(s.inputs || {});
+      if(!keys.length) lines.push("—");
+      keys.forEach(k => lines.push(`${k}: ${s.inputs[k]}`));
+      lines.push("");
+      lines.push("OUTPUT:");
+      if(!s.output){
+        lines.push("—");
+      } else {
+        lines.push("");
+        lines.push("DECISION:");
+        lines.push(s.output.decision || "");
+        lines.push("");
+        lines.push("WHY:");
+        lines.push(s.output.why || "");
+        lines.push("");
+        lines.push("NEXT 30 MINUTES:");
+        lines.push(s.output.nextStep || "");
+      }
+      return lines.join("\n");
+    }
+
+    // =========================
+    // Workspace UI
+    // =========================
+    function renderWorkspace(){
+      const s = getActive();
+      if(!s) return;
+
+      el("workspaceTitle").textContent = s.output ? "Decision saved." : "What do you need clarity on?";
+
+      // if already has output, show result panel
+      if(s.output){
+        el("starterPanel").style.display = "none";
+        el("flowPanel").style.display = "none";
+        el("resultPanel").style.display = "block";
+        renderResultPanel(s);
+      } else {
+        // default start
+        el("resultPanel").style.display = "none";
+        el("flowPanel").style.display = "none";
+        el("starterPanel").style.display = "block";
+      }
     }
 
     function startMode(mode){
+      const s = getActive();
+      if(!s) return;
+      s.mode = mode;
+      s.updatedAt = now();
+
       currentMode = mode;
-      el("starter").style.display = "none";
+      el("starterPanel").style.display = "none";
+      el("resultPanel").style.display = "none";
 
-      const flow = el("flow");
+      const flow = el("flowPanel");
       flow.style.display = "block";
-      el("result").style.display = "none";
-      el("result").innerHTML = "";
+      flow.innerHTML = buildFlowHtml(mode, s.inputs || {});
+      safeSave();
+      renderRail();
+    }
 
+    function buildFlowHtml(mode, inputs){
       if(mode === "angle"){
-        flow.innerHTML = `
+        return `
           <div class="fieldLabel">List your 2–3 product ideas</div>
-          <textarea id="ideas" placeholder="Example: AI prompt pack for realtors, automated onboarding kit, content engine templates..."></textarea>
+          <textarea id="ideas" placeholder="Example: AI prompt pack for realtors, automated onboarding kit, content engine templates...">${escapeHtml(inputs.ideas || "")}</textarea>
 
           <div class="fieldLabel">Who is this for?</div>
-          <input id="audience" placeholder="Example: overwhelmed coaches who need clients" />
+          <input id="audience" placeholder="Example: overwhelmed coaches who need clients" value="${escapeAttr(inputs.audience || "")}" />
 
           <div class="fieldLabel">What outcome do they want fast?</div>
-          <input id="outcome" placeholder="Example: launch in 7 days, book 3 clients, get consistent leads" />
+          <input id="outcome" placeholder="Example: launch in 7 days, book 3 clients, get consistent leads" value="${escapeAttr(inputs.outcome || "")}" />
 
           <div class="actions">
             <button class="primary" onclick="generate()">Generate Clarity</button>
-            <button class="ghost" onclick="resetAll()">Back</button>
+            <button class="ghost" onclick="goHome()">Back</button>
           </div>
         `;
       }
 
       if(mode === "offer"){
-        flow.innerHTML = `
+        return `
           <div class="fieldLabel">What are you building?</div>
-          <input id="topic" placeholder="Example: an AI toolkit for launching digital products" />
+          <input id="topic" placeholder="Example: an AI toolkit for launching digital products" value="${escapeAttr(inputs.topic || "")}" />
 
           <div class="fieldLabel">What problem does it solve?</div>
-          <input id="problem" placeholder="Example: they’re overwhelmed and stuck in planning loops" />
+          <input id="problem" placeholder="Example: they’re overwhelmed and stuck in planning loops" value="${escapeAttr(inputs.problem || "")}" />
 
           <div class="fieldLabel">What transformation do you promise?</div>
-          <input id="transform" placeholder="Example: from scattered to launched with a clear plan" />
+          <input id="transform" placeholder="Example: from scattered to launched with a clear plan" value="${escapeAttr(inputs.transform || "")}" />
 
           <div class="actions">
             <button class="primary" onclick="generate()">Generate Clarity</button>
-            <button class="ghost" onclick="resetAll()">Back</button>
+            <button class="ghost" onclick="goHome()">Back</button>
           </div>
         `;
       }
 
-      if(mode === "next"){
-        flow.innerHTML = `
-          <div class="fieldLabel">What are you stuck on?</div>
-          <textarea id="stuck" placeholder="Example: I can’t decide what to launch first and I keep tweaking..."></textarea>
+      // next
+      return `
+        <div class="fieldLabel">What are you stuck on?</div>
+        <textarea id="stuck" placeholder="Example: I can’t decide what to launch first and I keep tweaking...">${escapeHtml(inputs.stuck || "")}</textarea>
 
-          <div class="fieldLabel">What are you avoiding?</div>
-          <input id="avoid" placeholder="Example: writing the offer, setting the price, recording the first asset" />
+        <div class="fieldLabel">What are you avoiding?</div>
+        <input id="avoid" placeholder="Example: writing the offer, setting the price, recording the first asset" value="${escapeAttr(inputs.avoid || "")}" />
 
-          <div class="actions">
-            <button class="primary" onclick="generate()">Generate Clarity</button>
-            <button class="ghost" onclick="resetAll()">Back</button>
-          </div>
-        `;
-      }
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function buildResult(decision, why, nextStep){
-      const textToCopy =
-`DECISION:
-${decision}
-
-WHY:
-${why}
-
-NEXT 30 MINUTES:
-${nextStep}`;
-
-      el("result").innerHTML = `
-        <div class="resultGrid">
-          <div class="block">
-            <div class="blockTitle">Decision</div>
-            <p class="blockText">${escapeHtml(decision)}</p>
-          </div>
-
-          <div class="block">
-            <div class="blockTitle">Why</div>
-            <p class="blockText">${escapeHtml(why)}</p>
-          </div>
-
-          <div class="block">
-            <div class="blockTitle">Next 30 Minutes</div>
-            <p class="blockText">${escapeHtml(nextStep)}</p>
-          </div>
-
-          <div class="copyRow">
-            <button class="copyBtn" onclick='copyText(${JSON.stringify(textToCopy)})'>Copy Summary</button>
-            <div class="toast" id="toast"> </div>
-          </div>
-
-          <div class="actions" style="margin-top:6px;">
-            <button class="ghost" onclick="resetAll()">New Clarity</button>
-          </div>
+        <div class="actions">
+          <button class="primary" onclick="generate()">Generate Clarity</button>
+          <button class="ghost" onclick="goHome()">Back</button>
         </div>
       `;
+    }
 
-      el("flow").style.display = "none";
-      el("result").style.display = "block";
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    function goHome(){
+      const s = getActive();
+      if(!s) return;
+      currentMode = null;
+      el("flowPanel").style.display = "none";
+      el("resultPanel").style.display = "none";
+      el("starterPanel").style.display = "block";
+      el("workspaceTitle").textContent = "What do you need clarity on?";
+      s.mode = null;
+      s.updatedAt = now();
+      safeSave();
+      renderRail();
     }
 
     function generate(){
-      if(currentMode === "angle"){
-        const audience = (document.getElementById("audience")?.value || "").trim();
+      const s = getActive();
+      if(!s) return;
 
-        const decision =
-          `Choose the idea that delivers the fastest visible win for ${audience || "your audience"} (within 7–14 days).`;
+      // collect inputs for current mode
+      const mode = s.mode || currentMode;
+      if(!mode) return;
 
-        const why =
-          "Speed of transformation increases demand and simplifies messaging. A quick win gives you proof, clarity, and momentum.";
+      const inputs = {};
+      if(mode === "angle"){
+        inputs.ideas = (document.getElementById("ideas")?.value || "").trim();
+        inputs.audience = (document.getElementById("audience")?.value || "").trim();
+        inputs.outcome = (document.getElementById("outcome")?.value || "").trim();
 
-        const nextStep =
-          "Write one sentence: “I help [AUDIENCE] get [OUTCOME] without [PAIN].” Then outline 3 steps your product will teach. That’s your V1.";
+        s.inputs = inputs;
 
-        return buildResult(decision, why, nextStep);
+        const decision = `Choose the idea that delivers the fastest visible win for ${inputs.audience || "your audience"} (within 7–14 days).`;
+        const why = "Speed of transformation increases demand and simplifies messaging. A quick win creates proof, clarity, and momentum.";
+        const nextStep = "Write one sentence: “I help [AUDIENCE] get [OUTCOME] without [PAIN].” Then outline 3 steps your product will teach. That’s your V1.";
+
+        s.output = { decision, why, nextStep };
+        s.title = s.title === "New Session" ? titleFromText(inputs.ideas || inputs.outcome || inputs.audience) : s.title;
       }
 
-      if(currentMode === "offer"){
-        const decision =
-          "Package your offer around ONE transformation, ONE deliverable format, and ONE promise.";
+      if(mode === "offer"){
+        inputs.topic = (document.getElementById("topic")?.value || "").trim();
+        inputs.problem = (document.getElementById("problem")?.value || "").trim();
+        inputs.transform = (document.getElementById("transform")?.value || "").trim();
 
-        const why =
-          "A clear offer sells faster than a complex one. Specificity reduces hesitation for you and the buyer.";
+        s.inputs = inputs;
 
-        const nextStep =
-          "Write your promise in one line. Choose ONE format (template pack, mini course, checklist bundle, or workshop). Draft: Problem → Process → Outcome.";
+        const decision = "Package your offer around ONE transformation, ONE deliverable format, and ONE promise.";
+        const why = "A clear offer sells faster than a complex one. Specificity reduces hesitation for you and the buyer.";
+        const nextStep = "Write your promise in one line. Choose ONE format (template pack, mini course, checklist bundle, or workshop). Draft: Problem → Process → Outcome.";
 
-        return buildResult(decision, why, nextStep);
+        s.output = { decision, why, nextStep };
+        s.title = s.title === "New Session" ? titleFromText(inputs.topic || inputs.transform || inputs.problem) : s.title;
       }
 
-      if(currentMode === "next"){
-        const decision =
-          "Stop collecting options. Choose the next move that reduces uncertainty the fastest.";
+      if(mode === "next"){
+        inputs.stuck = (document.getElementById("stuck")?.value || "").trim();
+        inputs.avoid = (document.getElementById("avoid")?.value || "").trim();
 
-        const why =
-          "Clarity follows action. The fastest way to get unstuck is a small, visible step that produces new information.";
+        s.inputs = inputs;
 
-        const nextStep =
-          "Set a 30-minute timer. Do ONE: (1) write your offer sentence, (2) create the first template, (3) outline the launch steps, or (4) set a draft price + payment link.";
+        const decision = "Stop collecting options. Choose the next move that reduces uncertainty the fastest.";
+        const why = "Clarity follows action. The fastest way to get unstuck is a small, visible step that produces new information.";
+        const nextStep = "Set a 30-minute timer. Do ONE: (1) write your offer sentence, (2) create the first template, (3) outline the launch steps, or (4) set a draft price + payment link.";
 
-        return buildResult(decision, why, nextStep);
+        s.output = { decision, why, nextStep };
+        s.title = s.title === "New Session" ? titleFromText(inputs.stuck || inputs.avoid) : s.title;
       }
+
+      s.updatedAt = now();
+      safeSave();
+      renderRail();
+      renderWorkspace();
+    }
+
+    function titleFromText(t){
+      const raw = (t || "").trim().replace(/\s+/g, " ");
+      if(!raw) return "Clarity Session";
+      return raw.length > 34 ? raw.slice(0, 34) + "…" : raw;
+    }
+
+    function renderResultPanel(s){
+      const out = s.output;
+      const textToCopy = sessionToText(s);
+
+      el("resultPanel").innerHTML = `
+        <div class="resultGrid">
+          <div class="block">
+            <div class="blockTitle">Decision</div>
+            <p class="blockText">${escapeHtml(out.decision)}</p>
+          </div>
+          <div class="block">
+            <div class="blockTitle">Why</div>
+            <p class="blockText">${escapeHtml(out.why)}</p>
+          </div>
+          <div class="block">
+            <div class="blockTitle">Next 30 Minutes</div>
+            <p class="blockText">${escapeHtml(out.nextStep)}</p>
+          </div>
+
+          <div class="toolbar">
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="toolBtn" onclick='copyText(${JSON.stringify(textToCopy)})'>Copy</button>
+              <button class="toolBtn" onclick="exportCurrent()">Export</button>
+              <button class="toolBtn" onclick="window.print()">Print</button>
+            </div>
+            <div class="toast" id="toast"></div>
+          </div>
+
+          <div class="actions">
+            <button class="primary" onclick="newSession()">New Clarity</button>
+            <button class="ghost" onclick="editInputs()">Edit Inputs</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function editInputs(){
+      const s = getActive();
+      if(!s) return;
+      // keep output but allow editing: remove output and return to flow
+      s.output = null;
+      s.updatedAt = now();
+      safeSave();
+      renderRail();
+      // return to mode flow
+      startMode(s.mode || "angle");
     }
 
     async function copyText(text){
@@ -515,7 +1078,7 @@ ${nextStep}`;
         const t = document.getElementById("toast");
         if(t){
           t.textContent = "Copied.";
-          setTimeout(()=> t.textContent = " ", 1400);
+          setTimeout(()=> t.textContent = "", 1400);
         }
       }catch{
         alert("Copy failed. You can manually select and copy.");
@@ -523,13 +1086,59 @@ ${nextStep}`;
     }
 
     function escapeHtml(str){
-      return String(str)
+      return String(str||"")
         .replaceAll("&","&amp;")
         .replaceAll("<","&lt;")
         .replaceAll(">","&gt;")
         .replaceAll('"',"&quot;")
         .replaceAll("'","&#039;");
     }
+    function escapeAttr(str){
+      return String(str||"")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function bindShortcuts(){
+      document.addEventListener("keydown", (e) => {
+        const isMac = navigator.platform.toLowerCase().includes("mac");
+        const mod = isMac ? e.metaKey : e.ctrlKey;
+
+        if(mod && e.key.toLowerCase() === "k"){
+          e.preventDefault();
+          newSession();
+        }
+
+        if(mod && e.key.toLowerCase() === "p"){
+          // print is allowed (this makes it feel like an app)
+          e.preventDefault();
+          window.print();
+        }
+
+        if(e.key === "Escape"){
+          closeMenu();
+        }
+      });
+    }
+
+    function toggleMobileRail(){
+      const rail = el("rail");
+      if(!rail) return;
+      // On mobile, rail is hidden via CSS; we temporarily show it as overlay
+      rail.style.display = (rail.style.display === "block") ? "none" : "block";
+      rail.style.position = "fixed";
+      rail.style.left = "18px";
+      rail.style.right = "18px";
+      rail.style.top = "72px";
+      rail.style.height = "calc(100vh - 90px)";
+      rail.style.zIndex = "80";
+    }
+
+    // Initialize
+    init();
   </script>
 </body>
 </html>
