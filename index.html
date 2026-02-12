@@ -5,50 +5,112 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Clarity Engine v1.0</title>
 <style>
-body { font-family: sans-serif; background:#f9fafb; color:#222; display:flex; justify-content:center; align-items:center; height:100vh; }
-.card { background:white; padding:2rem; border-radius:1rem; box-shadow:0 2px 8px rgba(0,0,0,0.1); width:90%; max-width:420px; }
-textarea { width:100%; min-height:80px; margin-top:.5rem; padding:.5rem; border:1px solid #ccc; border-radius:.5rem; }
-button { width:100%; margin-top:1rem; padding:.75rem; background:#2563eb; color:white; border:none; border-radius:.5rem; cursor:pointer; }
-button:hover { background:#1e40af; }
-.hidden { display:none; }
+  body {
+    font-family: "Inter", system-ui, sans-serif;
+    background: linear-gradient(180deg, #f8fafc 0%, #e0f2fe 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    color: #1e293b;
+  }
+  .card {
+    background: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    width: 90%;
+    max-width: 480px;
+    transition: all 0.3s ease;
+  }
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #0f172a;
+  }
+  p {
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  textarea {
+    width: 100%;
+    min-height: 90px;
+    padding: 0.8rem;
+    border-radius: 0.75rem;
+    border: 1px solid #cbd5e1;
+    font-size: 1rem;
+    outline: none;
+    resize: none;
+    margin-top: 0.5rem;
+    transition: border-color 0.2s;
+  }
+  textarea:focus {
+    border-color: #3b82f6;
+  }
+  button {
+    width: 100%;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.9rem;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background 0.2s;
+  }
+  button:hover {
+    background: #2563eb;
+  }
+  .hidden { display: none; }
 </style>
 </head>
 <body>
-<div class="card">
-  <h1>Clarity Engine v1.0</h1>
-  <div id="step1">
-    <p>What feels unclear or heavy right now?</p>
-    <textarea id="reflect"></textarea>
-    <button onclick="nextStep(1)">Next</button>
+  <div class="card">
+    <h1>Clarity Engine v1.0</h1>
+
+    <div id="step1">
+      <p>What feels unclear or heavy right now?</p>
+      <textarea id="reflect"></textarea>
+      <button onclick="nextStep(1)">Next</button>
+    </div>
+
+    <div id="step2" class="hidden">
+      <p>Let’s sort things gently.</p>
+      <textarea id="matters" placeholder="What matters most..."></textarea>
+      <textarea id="noise" placeholder="What feels like noise..."></textarea>
+      <textarea id="wait" placeholder="What can wait..."></textarea>
+      <textarea id="control" placeholder="What’s in your control..."></textarea>
+      <button onclick="nextStep(2)">Next</button>
+    </div>
+
+    <div id="step3" class="hidden">
+      <p>If you could do one small thing next, what would it be?</p>
+      <textarea id="decision" placeholder="Your one next step..."></textarea>
+      <button onclick="nextStep(3)">Confirm</button>
+    </div>
+
+    <div id="step4" class="hidden">
+      <p id="summary"></p>
+      <p>You can come back to the Clarity Engine anytime you need clarity.</p>
+      <button onclick="location.reload()">Start Over</button>
+    </div>
   </div>
-  <div id="step2" class="hidden">
-    <p>Let’s sort it out a little.</p>
-    <textarea id="matters" placeholder="What matters most..."></textarea>
-    <textarea id="noise" placeholder="What feels like noise..."></textarea>
-    <textarea id="wait" placeholder="What can wait..."></textarea>
-    <textarea id="control" placeholder="What’s in your control..."></textarea>
-    <button onclick="nextStep(2)">Next</button>
-  </div>
-  <div id="step3" class="hidden">
-    <p>If you could do one small thing next, what would it be?</p>
-    <textarea id="decision" placeholder="Your one next step..."></textarea>
-    <button onclick="nextStep(3)">Confirm</button>
-  </div>
-  <div id="step4" class="hidden">
-    <p id="summary"></p>
-    <p>You can come back to the Clarity Engine anytime you need clarity.</p>
-    <button onclick="location.reload()">Start Over</button>
-  </div>
-</div>
-<script>
-function nextStep(n){
-  document.getElementById('step'+n).classList.add('hidden');
-  document.getElementById('step'+(n+1)).classList.remove('hidden');
-  if(n===3){
-    const decision=document.getElementById('decision').value.trim();
-    document.getElementById('summary').innerText=`You’re clear that “${decision}” is your next small step.`;
-  }
-}
-</script>
+
+  <script>
+    function nextStep(n){
+      document.getElementById('step'+n).classList.add('hidden');
+      document.getElementById('step'+(n+1)).classList.remove('hidden');
+      if(n===3){
+        const decision=document.getElementById('decision').value.trim();
+        document.getElementById('summary').innerText=`You’re clear that “${decision}” is your next small step.`;
+      }
+    }
+  </script>
 </body>
 </html>
