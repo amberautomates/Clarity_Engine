@@ -2,89 +2,259 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Clarity Engine™ by Amber</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Clarity Guide™</title>
 
-<!-- Inter -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#f7f6f4;
-  --blush:rgba(217,167,177,0.10);
-  --panel:rgba(255,255,255,0.72);
-  --border:rgba(23,23,23,0.10);
-  --text:#171717;
-  --muted:rgba(23,23,23,0.62);
-  --accent:#d9a7b1;
+  --bg:#fbf7f7;
+  --panel:#ffffff;
+  --panel2:#f5f2f2;
+  --border:rgba(20,20,20,0.10);
+  --text:#1f1f1f;
+  --muted:rgba(31,31,31,0.6);
+  --accent:#e7b6be;
+  --accent-soft:rgba(231,182,190,0.18);
   --radius:16px;
-  --shadow:0 10px 30px rgba(0,0,0,0.06);
-  --maxw:920px;
+  --shadow:0 14px 40px rgba(0,0,0,0.08);
 }
 
 *{box-sizing:border-box}
-html,body{height:100%}
 body{
   margin:0;
-  font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  color:var(--text);
+  font-family:Inter,system-ui;
   background:
-    radial-gradient(900px 420px at 50% 0%, var(--blush), rgba(217,167,177,0) 70%),
+    radial-gradient(900px 420px at 20% -10%, rgba(231,182,190,0.25), transparent 60%),
     var(--bg);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+  color:var(--text);
 }
 
-/* Top bar */
-.topbar{
-  position:sticky;
-  top:0;
-  height:64px;
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  backdrop-filter:blur(10px);
-  background:rgba(247,246,244,0.70);
-  border-bottom:1px solid rgba(0,0,0,0.05);
-  z-index:10;
+.app{
+  max-width:900px;
+  margin:60px auto;
+  padding:20px;
 }
-.brand{
-  font-weight:600;
-  letter-spacing:0.2px;
-}
-.brand span{font-weight:500;color:var(--muted)}
 
-/* Workspace */
-.main{
-  flex:1;
-  width:100%;
-  display:flex;
-  justify-content:center;
-  padding:40px 18px 140px;
-}
-.column{width:100%;max-width:var(--maxw)}
-
-/* Chat panel */
-.chat-panel{
+.card{
   background:var(--panel);
-  backdrop-filter:blur(10px);
   border:1px solid var(--border);
   border-radius:var(--radius);
   box-shadow:var(--shadow);
-  padding:2rem 3rem;
-  min-height:60vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
+  padding:30px;
 }
 
-/* Messages */
-.message{
-  line-height:1.8;
-  margin-bottom:1rem;
-  opacity:0;
-  animat
+h1{
+  margin:0 0 8px 0;
+  font-size:22px;
+  font-weight:700;
+}
+
+.sub{
+  color:var(--muted);
+  margin-bottom:30px;
+}
+
+.mode-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.mode-buttons button{
+  padding:16px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#fff;
+  font-weight:600;
+  cursor:pointer;
+  text-align:left;
+  transition:all .15s ease;
+}
+
+.mode-buttons button:hover{
+  background:var(--accent-soft);
+}
+
+input, textarea{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  margin-bottom:16px;
+  font-family:inherit;
+}
+
+textarea{min-height:100px;}
+
+.primary{
+  padding:14px;
+  border-radius:14px;
+  border:1px solid var(--accent);
+  background:var(--accent-soft);
+  font-weight:700;
+  cursor:pointer;
+  width:100%;
+}
+
+.result{
+  margin-top:20px;
+  padding:20px;
+  border-radius:14px;
+  background:#fff;
+  border:1px solid var(--border);
+}
+
+.section-label{
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.6px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+.back{
+  margin-top:20px;
+  text-align:center;
+  color:var(--muted);
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+  <div class="card">
+
+    <div id="starter">
+      <h1>Clarity Guide™</h1>
+      <div class="sub">Choose one lane. Get one decision. Take one next step.</div>
+
+      <div class="mode-buttons">
+        <button onclick="startMode('angle')">Pick My Product Angle</button>
+        <button onclick="startMode('offer')">Structure My Offer</button>
+        <button onclick="startMode('next')">Tell Me My Next Step</button>
+      </div>
+    </div>
+
+    <div id="flow" style="display:none;"></div>
+
+    <div id="result" style="display:none;"></div>
+
+  </div>
+</div>
+
+<script>
+let currentMode = null;
+
+function startMode(mode){
+  currentMode = mode;
+  document.getElementById("starter").style.display="none";
+  const flow = document.getElementById("flow");
+  flow.style.display="block";
+
+  if(mode==="angle"){
+    flow.innerHTML=`
+      <div class="section-label">Your Ideas</div>
+      <textarea id="ideas"></textarea>
+
+      <div class="section-label">Your Target Audience</div>
+      <input id="audience"/>
+
+      <div class="section-label">Desired Outcome</div>
+      <input id="outcome"/>
+
+      <button class="primary" onclick="generate()">Generate Clarity</button>
+    `;
+  }
+
+  if(mode==="offer"){
+    flow.innerHTML=`
+      <div class="section-label">Product Topic</div>
+      <input id="topic"/>
+
+      <div class="section-label">Core Problem</div>
+      <input id="problem"/>
+
+      <div class="section-label">Transformation</div>
+      <input id="transform"/>
+
+      <button class="primary" onclick="generate()">Generate Clarity</button>
+    `;
+  }
+
+  if(mode==="next"){
+    flow.innerHTML=`
+      <div class="section-label">What Are You Stuck On?</div>
+      <textarea id="stuck"></textarea>
+
+      <div class="section-label">What Are You Avoiding?</div>
+      <input id="avoid"/>
+
+      <button class="primary" onclick="generate()">Generate Clarity</button>
+    `;
+  }
+}
+
+function generate(){
+  const result = document.getElementById("result");
+  result.style.display="block";
+
+  let output="";
+
+  if(currentMode==="angle"){
+    output=`
+      <div class="result">
+        <div class="section-label">Decision</div>
+        Choose the idea that creates the fastest, clearest result for your audience.
+
+        <div class="section-label" style="margin-top:16px;">Why</div>
+        Speed of transformation increases demand and simplifies marketing.
+
+        <div class="section-label" style="margin-top:16px;">Next 30 Minutes</div>
+        Write a one-sentence offer statement and outline 3 core steps your product will teach.
+      </div>
+    `;
+  }
+
+  if(currentMode==="offer"){
+    output=`
+      <div class="result">
+        <div class="section-label">Decision</div>
+        Package your offer around one primary transformation.
+
+        <div class="section-label" style="margin-top:16px;">Structure</div>
+        Problem → Process → Outcome.
+
+        <div class="section-label" style="margin-top:16px;">Next 30 Minutes</div>
+        Draft a simple 3-module outline and define your product promise clearly.
+      </div>
+    `;
+  }
+
+  if(currentMode==="next"){
+    output=`
+      <div class="result">
+        <div class="section-label">Decision</div>
+        Stop planning. Execute one visible action.
+
+        <div class="section-label" style="margin-top:16px;">Next 30 Minutes</div>
+        Complete the single task that reduces uncertainty the fastest.
+      </div>
+    `;
+  }
+
+  result.innerHTML = output + `<div class="back" onclick="reset()">Start Over</div>`;
+  document.getElementById("flow").style.display="none";
+}
+
+function reset(){
+  document.getElementById("result").style.display="none";
+  document.getElementById("starter").style.display="block";
+}
+</script>
+
+</body>
+</html>
