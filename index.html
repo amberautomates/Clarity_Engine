@@ -1,260 +1,645 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Clarity Guide™</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clarity Guide™</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      /* Palette: blush / grey / white / charcoal */
+      --bg: #fbf7f7;
+      --panel: #ffffff;
+      --panel2: #f4f1f1;
+      --text: #1f1f1f;
+      --muted: rgba(31,31,31,0.62);
+      --border: rgba(31,31,31,0.10);
 
-<style>
-:root{
-  --bg:#fbf7f7;
-  --panel:#ffffff;
-  --panel2:#f5f2f2;
-  --border:rgba(20,20,20,0.10);
-  --text:#1f1f1f;
-  --muted:rgba(31,31,31,0.6);
-  --accent:#e7b6be;
-  --accent-soft:rgba(231,182,190,0.18);
-  --radius:16px;
-  --shadow:0 14px 40px rgba(0,0,0,0.08);
-}
+      --blush: #e7b6be;
+      --blushSoft: rgba(231,182,190,0.20);
 
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Inter,system-ui;
-  background:
-    radial-gradient(900px 420px at 20% -10%, rgba(231,182,190,0.25), transparent 60%),
-    var(--bg);
-  color:var(--text);
-}
+      --radius: 20px;
+      --radius2: 14px;
+      --shadow: 0 22px 60px rgba(0,0,0,0.08);
+      --shadow2: 0 12px 28px rgba(0,0,0,0.06);
 
-.app{
-  max-width:900px;
-  margin:60px auto;
-  padding:20px;
-}
+      --max: 980px;
+    }
 
-.card{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:30px;
-}
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 420px at 20% -10%, rgba(231,182,190,0.26), rgba(251,247,247,0) 60%),
+        radial-gradient(1000px 520px at 90% 0%, rgba(60,60,60,0.06), rgba(251,247,247,0) 55%),
+        var(--bg);
+    }
 
-h1{
-  margin:0 0 8px 0;
-  font-size:22px;
-  font-weight:700;
-}
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding: 54px 18px;
+    }
 
-.sub{
-  color:var(--muted);
-  margin-bottom:30px;
-}
+    .shell{
+      width: min(var(--max), 100%);
+      display:grid;
+      grid-template-columns: 280px 1fr;
+      gap: 18px;
+      align-items:start;
+    }
 
-.mode-buttons{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-}
+    /* Sidebar */
+    .rail{
+      background: rgba(255,255,255,0.65);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      padding: 16px;
+      position: sticky;
+      top: 18px;
+      backdrop-filter: blur(10px);
+    }
 
-.mode-buttons button{
-  padding:16px;
-  border-radius:14px;
-  border:1px solid var(--border);
-  background:#fff;
-  font-weight:600;
-  cursor:pointer;
-  text-align:left;
-  transition:all .15s ease;
-}
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      padding: 6px 6px 12px 6px;
+    }
 
-.mode-buttons button:hover{
-  background:var(--accent-soft);
-}
+    .brandTitle{
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
 
-input, textarea{
-  width:100%;
-  padding:12px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  margin-bottom:16px;
-  font-family:inherit;
-}
+    .badge{
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(231,182,190,0.50);
+      background: rgba(231,182,190,0.16);
+      color: var(--text);
+    }
 
-textarea{min-height:100px;}
+    .brandSub{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
 
-.primary{
-  padding:14px;
-  border-radius:14px;
-  border:1px solid var(--accent);
-  background:var(--accent-soft);
-  font-weight:700;
-  cursor:pointer;
-  width:100%;
-}
+    .divider{
+      height:1px;
+      background: rgba(31,31,31,0.08);
+      margin: 10px 0 14px 0;
+    }
 
-.result{
-  margin-top:20px;
-  padding:20px;
-  border-radius:14px;
-  background:#fff;
-  border:1px solid var(--border);
-}
+    .railLabel{
+      font-size: 11px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: rgba(31,31,31,0.52);
+      margin: 0 0 10px 0;
+      padding: 0 6px;
+    }
 
-.section-label{
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.6px;
-  color:var(--muted);
-  margin-bottom:6px;
-}
+    .railBtn{
+      width:100%;
+      padding: 11px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(231,182,190,0.55);
+      background: rgba(231,182,190,0.18);
+      color: var(--text);
+      cursor:pointer;
+      font-weight: 800;
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+    }
+    .railBtn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      background: rgba(231,182,190,0.24);
+    }
 
-.back{
-  margin-top:20px;
-  text-align:center;
-  color:var(--muted);
-  cursor:pointer;
-}
-</style>
+    .railNote{
+      font-size: 12px;
+      color: var(--muted);
+      padding: 10px 6px 0 6px;
+      line-height: 1.5;
+    }
+
+    /* Main card */
+    .main{
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 16px;
+      padding: 22px 24px;
+      border-bottom: 1px solid rgba(31,31,31,0.08);
+      background: rgba(255,255,255,0.60);
+    }
+
+    .topLeft h1{
+      margin:0;
+      font-size: 22px;
+      font-weight: 850;
+      letter-spacing: -0.2px;
+    }
+    .topLeft .kicker{
+      margin-top: 8px;
+      font-size: 13px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: rgba(31,31,31,0.45);
+    }
+    .topLeft .sub{
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+      max-width: 640px;
+    }
+
+    .pillRow{
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+      align-items:center;
+      padding-top: 2px;
+    }
+    .pill{
+      font-size: 12px;
+      color: rgba(31,31,31,0.70);
+      border: 1px solid rgba(31,31,31,0.10);
+      background: rgba(255,255,255,0.7);
+      padding: 8px 10px;
+      border-radius: 999px;
+    }
+
+    .content{
+      padding: 22px 24px 26px 24px;
+    }
+
+    .modes{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      max-width: 720px;
+    }
+
+    .modeBtn{
+      padding: 16px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(31,31,31,0.10);
+      background: #fff;
+      cursor:pointer;
+      text-align:left;
+      transition: transform .12s ease, box-shadow .12s ease, border .12s ease, background .12s ease;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.04);
+    }
+    .modeBtn:hover{
+      transform: translateY(-2px);
+      border: 1px solid rgba(231,182,190,0.55);
+      background: rgba(231,182,190,0.10);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.06);
+    }
+
+    .modeTitle{
+      font-weight: 800;
+      font-size: 15px;
+      margin: 0 0 6px 0;
+    }
+    .modeDesc{
+      font-size: 13px;
+      color: var(--muted);
+      margin:0;
+      line-height:1.5;
+    }
+
+    /* Flow */
+    .flow{
+      max-width: 720px;
+      display:none;
+    }
+
+    .fieldLabel{
+      font-size: 12px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: rgba(31,31,31,0.50);
+      margin: 18px 0 8px 0;
+    }
+
+    input, textarea{
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(31,31,31,0.12);
+      background: #fff;
+      padding: 12px 12px;
+      font-size: 14px;
+      outline:none;
+      color: var(--text);
+      transition: border .12s ease, box-shadow .12s ease;
+    }
+    textarea{ min-height: 110px; resize: vertical; }
+
+    input:focus, textarea:focus{
+      border: 1px solid rgba(231,182,190,0.75);
+      box-shadow: 0 0 0 4px rgba(231,182,190,0.22);
+    }
+
+    .actions{
+      display:flex;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .primary{
+      flex:1;
+      min-width: 220px;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(231,182,190,0.70);
+      background: rgba(231,182,190,0.20);
+      cursor:pointer;
+      font-weight: 900;
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+    }
+    .primary:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.06);
+      background: rgba(231,182,190,0.26);
+    }
+
+    .ghost{
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(31,31,31,0.12);
+      background: rgba(255,255,255,0.65);
+      cursor:pointer;
+      font-weight: 800;
+      color: rgba(31,31,31,0.78);
+    }
+
+    /* Result */
+    .result{
+      max-width: 720px;
+      display:none;
+      border: 1px solid rgba(31,31,31,0.10);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+      padding: 18px;
+    }
+
+    .resultGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .block{
+      border: 1px solid rgba(31,31,31,0.08);
+      background: rgba(245,241,241,0.65);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .blockTitle{
+      font-size: 12px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: rgba(31,31,31,0.55);
+      margin: 0 0 6px 0;
+      font-weight: 900;
+    }
+
+    .blockText{
+      margin:0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(31,31,31,0.90);
+      white-space: pre-wrap;
+    }
+
+    .copyRow{
+      display:flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content: space-between;
+    }
+
+    .copyBtn{
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(31,31,31,0.12);
+      background: rgba(255,255,255,0.75);
+      cursor:pointer;
+      font-weight: 900;
+    }
+
+    .toast{
+      font-size: 12px;
+      color: rgba(31,31,31,0.55);
+    }
+
+    /* Mobile */
+    @media (max-width: 920px){
+      .shell{ grid-template-columns: 1fr; }
+      .rail{ position: relative; top: 0; }
+      .pillRow{ justify-content:flex-start; }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="wrap">
+    <div class="shell">
 
-<div class="app">
-  <div class="card">
+      <!-- Sidebar -->
+      <aside class="rail">
+        <div class="brand">
+          <div class="brandTitle">
+            Clarity Guide™ <span class="badge">Lite</span>
+          </div>
+          <div class="brandSub">
+            A decision accelerator inside the AI Build Kit™.
+          </div>
+        </div>
 
-    <div id="starter">
-      <h1>Clarity Guide™</h1>
-      <div class="sub">Choose one lane. Get one decision. Take one next step.</div>
+        <div class="divider"></div>
 
-      <div class="mode-buttons">
-        <button onclick="startMode('angle')">Pick My Product Angle</button>
-        <button onclick="startMode('offer')">Structure My Offer</button>
-        <button onclick="startMode('next')">Tell Me My Next Step</button>
-      </div>
+        <div class="railLabel">Quick Start</div>
+        <button class="railBtn" onclick="resetAll()">New Clarity</button>
+        <div class="railNote">
+          This Lite version gives you structured decisions.<br>
+          AI upgrade can be added later.
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <main class="main">
+        <div class="topbar">
+          <div class="topLeft">
+            <div class="kicker">Decision Accelerator for Digital Creators</div>
+            <h1>What do you need clarity on?</h1>
+            <div class="sub">
+              Choose one lane. Get one decision. Take one next step.
+            </div>
+          </div>
+
+          <div class="pillRow">
+            <div class="pill">Blush • Minimal • Structured</div>
+            <div class="pill">One decision</div>
+            <div class="pill">One next step</div>
+          </div>
+        </div>
+
+        <div class="content">
+
+          <!-- Starter -->
+          <section id="starter">
+            <div class="modes">
+              <button class="modeBtn" onclick="startMode('angle')">
+                <div class="modeTitle">Pick My Product Angle</div>
+                <p class="modeDesc">Narrow your idea into a clear, sellable direction.</p>
+              </button>
+
+              <button class="modeBtn" onclick="startMode('offer')">
+                <div class="modeTitle">Structure My Offer</div>
+                <p class="modeDesc">Turn a vague idea into a simple promise + format.</p>
+              </button>
+
+              <button class="modeBtn" onclick="startMode('next')">
+                <div class="modeTitle">Tell Me My Next Step</div>
+                <p class="modeDesc">Stop looping. Choose the next move that reduces uncertainty.</p>
+              </button>
+            </div>
+          </section>
+
+          <!-- Flow -->
+          <section id="flow" class="flow"></section>
+
+          <!-- Result -->
+          <section id="result" class="result"></section>
+
+        </div>
+      </main>
+
     </div>
-
-    <div id="flow" style="display:none;"></div>
-
-    <div id="result" style="display:none;"></div>
-
   </div>
-</div>
 
 <script>
-let currentMode = null;
+  let currentMode = null;
 
-function startMode(mode){
-  currentMode = mode;
-  document.getElementById("starter").style.display="none";
-  const flow = document.getElementById("flow");
-  flow.style.display="block";
+  function el(id){ return document.getElementById(id); }
 
-  if(mode==="angle"){
-    flow.innerHTML=`
-      <div class="section-label">Your Ideas</div>
-      <textarea id="ideas"></textarea>
-
-      <div class="section-label">Your Target Audience</div>
-      <input id="audience"/>
-
-      <div class="section-label">Desired Outcome</div>
-      <input id="outcome"/>
-
-      <button class="primary" onclick="generate()">Generate Clarity</button>
-    `;
+  function resetAll(){
+    currentMode = null;
+    el("starter").style.display = "block";
+    el("flow").style.display = "none";
+    el("result").style.display = "none";
+    el("flow").innerHTML = "";
+    el("result").innerHTML = "";
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  if(mode==="offer"){
-    flow.innerHTML=`
-      <div class="section-label">Product Topic</div>
-      <input id="topic"/>
+  function startMode(mode){
+    currentMode = mode;
+    el("starter").style.display = "none";
 
-      <div class="section-label">Core Problem</div>
-      <input id="problem"/>
+    const flow = el("flow");
+    flow.style.display = "block";
+    el("result").style.display = "none";
+    el("result").innerHTML = "";
 
-      <div class="section-label">Transformation</div>
-      <input id="transform"/>
+    if(mode === "angle"){
+      flow.innerHTML = `
+        <div class="fieldLabel">List your 2–3 product ideas</div>
+        <textarea id="ideas" placeholder="Example: AI prompt pack for realtors, content calendar for coaches, automated lead tracker..."></textarea>
 
-      <button class="primary" onclick="generate()">Generate Clarity</button>
-    `;
+        <div class="fieldLabel">Who is this for?</div>
+        <input id="audience" placeholder="Example: overwhelmed coaches who need clients" />
+
+        <div class="fieldLabel">What outcome do they want fast?</div>
+        <input id="outcome" placeholder="Example: book 3 clients, launch in 7 days, get consistent leads" />
+
+        <div class="actions">
+          <button class="primary" onclick="generate()">Generate Clarity</button>
+          <button class="ghost" onclick="resetAll()">Back</button>
+        </div>
+      `;
+    }
+
+    if(mode === "offer"){
+      flow.innerHTML = `
+        <div class="fieldLabel">What are you building?</div>
+        <input id="topic" placeholder="Example: an AI toolkit for launching digital products" />
+
+        <div class="fieldLabel">What problem does it solve?</div>
+        <input id="problem" placeholder="Example: they’re overwhelmed and can’t start" />
+
+        <div class="fieldLabel">What transformation do you promise?</div>
+        <input id="transform" placeholder="Example: from scattered to launched with a clear plan" />
+
+        <div class="actions">
+          <button class="primary" onclick="generate()">Generate Clarity</button>
+          <button class="ghost" onclick="resetAll()">Back</button>
+        </div>
+      `;
+    }
+
+    if(mode === "next"){
+      flow.innerHTML = `
+        <div class="fieldLabel">What are you stuck on?</div>
+        <textarea id="stuck" placeholder="Example: I can’t decide what to launch first and I keep tweaking..."></textarea>
+
+        <div class="fieldLabel">What are you avoiding?</div>
+        <input id="avoid" placeholder="Example: writing the offer, recording, posting, setting the price" />
+
+        <div class="actions">
+          <button class="primary" onclick="generate()">Generate Clarity</button>
+          <button class="ghost" onclick="resetAll()">Back</button>
+        </div>
+      `;
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  if(mode==="next"){
-    flow.innerHTML=`
-      <div class="section-label">What Are You Stuck On?</div>
-      <textarea id="stuck"></textarea>
+  function buildResult(decision, why, nextStep){
+    const textToCopy =
+`DECISION:
+${decision}
 
-      <div class="section-label">What Are You Avoiding?</div>
-      <input id="avoid"/>
+WHY:
+${why}
 
-      <button class="primary" onclick="generate()">Generate Clarity</button>
-    `;
-  }
-}
+NEXT 30 MINUTES:
+${nextStep}`;
 
-function generate(){
-  const result = document.getElementById("result");
-  result.style.display="block";
+    el("result").innerHTML = `
+      <div class="resultGrid">
+        <div class="block">
+          <div class="blockTitle">Decision</div>
+          <p class="blockText">${escapeHtml(decision)}</p>
+        </div>
+        <div class="block">
+          <div class="blockTitle">Why</div>
+          <p class="blockText">${escapeHtml(why)}</p>
+        </div>
+        <div class="block">
+          <div class="blockTitle">Next 30 Minutes</div>
+          <p class="blockText">${escapeHtml(nextStep)}</p>
+        </div>
 
-  let output="";
+        <div class="copyRow">
+          <button class="copyBtn" onclick='copyText(${JSON.stringify(textToCopy)})'>Copy Summary</button>
+          <div class="toast" id="toast"> </div>
+        </div>
 
-  if(currentMode==="angle"){
-    output=`
-      <div class="result">
-        <div class="section-label">Decision</div>
-        Choose the idea that creates the fastest, clearest result for your audience.
-
-        <div class="section-label" style="margin-top:16px;">Why</div>
-        Speed of transformation increases demand and simplifies marketing.
-
-        <div class="section-label" style="margin-top:16px;">Next 30 Minutes</div>
-        Write a one-sentence offer statement and outline 3 core steps your product will teach.
+        <div class="actions" style="margin-top:6px;">
+          <button class="ghost" onclick="resetAll()">New Clarity</button>
+        </div>
       </div>
     `;
+
+    el("flow").style.display = "none";
+    el("result").style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  if(currentMode==="offer"){
-    output=`
-      <div class="result">
-        <div class="section-label">Decision</div>
-        Package your offer around one primary transformation.
+  function generate(){
+    // We intentionally keep this "Lite" logic structured and constrained.
+    if(currentMode === "angle"){
+      const audience = (document.getElementById("audience")?.value || "").trim();
+      const outcome  = (document.getElementById("outcome")?.value || "").trim();
 
-        <div class="section-label" style="margin-top:16px;">Structure</div>
-        Problem → Process → Outcome.
+      const decision =
+        `Choose the idea that delivers the fastest visible win for ${audience || "your audience"} (within 7–14 days).`;
 
-        <div class="section-label" style="margin-top:16px;">Next 30 Minutes</div>
-        Draft a simple 3-module outline and define your product promise clearly.
-      </div>
-    `;
+      const why =
+        "Speed of transformation increases demand and reduces overwhelm. A quick win gives you testimonials, clarity, and momentum.";
+
+      const nextStep =
+        "Write one sentence: “I help [AUDIENCE] get [OUTCOME] without [PAIN].” Then outline 3 steps your product will teach. That’s your V1.";
+
+      return buildResult(decision, why, nextStep);
+    }
+
+    if(currentMode === "offer"){
+      const decision =
+        "Package your offer around ONE transformation, ONE deliverable format, and ONE promise.";
+
+      const why =
+        "A clear offer sells faster than a complex one. Specificity reduces hesitation for you and the buyer.";
+
+      const nextStep =
+        "Write your promise in one line. Choose ONE format (template pack, mini course, checklist bundle, or workshop). Draft a 3-part outline: Problem → Process → Outcome.";
+
+      return buildResult(decision, why, nextStep);
+    }
+
+    if(currentMode === "next"){
+      const decision =
+        "Stop collecting options. Choose the next move that reduces uncertainty the fastest.";
+
+      const why =
+        "Clarity follows action. The fastest way to get unstuck is a small, visible step that produces new information.";
+
+      const nextStep =
+        "Set a 30-minute timer. Do ONE of these: (1) write your offer sentence, (2) create the first template, (3) outline the launch steps, or (4) set the price + payment link draft.";
+
+      return buildResult(decision, why, nextStep);
+    }
   }
 
-  if(currentMode==="next"){
-    output=`
-      <div class="result">
-        <div class="section-label">Decision</div>
-        Stop planning. Execute one visible action.
-
-        <div class="section-label" style="margin-top:16px;">Next 30 Minutes</div>
-        Complete the single task that reduces uncertainty the fastest.
-      </div>
-    `;
+  async function copyText(text){
+    try{
+      await navigator.clipboard.writeText(text);
+      const t = document.getElementById("toast");
+      if(t){
+        t.textContent = "Copied.";
+        setTimeout(()=> t.textContent = " ", 1400);
+      }
+    }catch{
+      alert("Copy failed. You can manually select and copy.");
+    }
   }
 
-  result.innerHTML = output + `<div class="back" onclick="reset()">Start Over</div>`;
-  document.getElementById("flow").style.display="none";
-}
-
-function reset(){
-  document.getElementById("result").style.display="none";
-  document.getElementById("starter").style.display="block";
-}
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
 </script>
-
 </body>
 </html>
